@@ -31,7 +31,7 @@ jobs:
         run: npm run test --if-present
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip ./*
+        run: zip -r release.zip build/* # Adjust to the directory containing your build output
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -44,9 +44,7 @@ jobs:
     needs: build
     environment:
       name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write # This is required for requesting the JWT
+      # Ensure this environment is set up in your GitHub repository settings
 
     steps:
       - name: Download artifact from build job
@@ -60,16 +58,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_AD8580E6EE0445B8B773C4E24AE423B2 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_5339A0F3C3C94BED8735356724061C70 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_963597259460463192F0ADB507E8881A }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
       - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'robin-webapp'
-          slot-name: 'Production'
-          package: .
+          slot-name: 'Production' # Remove if not using deployment slots
+          package: release.zip
         env:
           INTERN_MGMT_SECRET: ${{ secrets.INTERN_MGMT_SECRET }}
