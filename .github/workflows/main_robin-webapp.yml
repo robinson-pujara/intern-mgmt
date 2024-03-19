@@ -21,6 +21,12 @@ jobs:
         with:
           node-version: '18.x'
 
+      - name: Install dependencies and run vite
+        run: |
+          npm install vite
+          yarn dev &
+          wait
+
       - name: npm install, build, and test
         run: |
           npm install
