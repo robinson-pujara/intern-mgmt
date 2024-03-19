@@ -56,9 +56,9 @@ jobs:
       - name: Unzip artifact for deployment 
         # Update this section 
         run: |
-            unzip release.zip -d dist  # Extract into the 'dist' folder
-            cd dist                   # Move into the 'dist' folder
-            ls -al                    # List contents for verification
+          unzip release.zip -d dist  # Extract into the 'dist' folder
+          cd dist                   # Move into the 'dist' folder
+          ls -al                    # List contents for verification
 
       - name: Login to Azure 
         uses: azure/login@v1
@@ -73,4 +73,4 @@ jobs:
         with:
           app-name: 'robin-webapp'
           slot-name: 'Production'
-          package: .  # Now points to the 'dist' folder 
+          package: .  # Now points to the 'dist' folder     
