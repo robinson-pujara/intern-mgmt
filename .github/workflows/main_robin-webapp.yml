@@ -22,8 +22,7 @@ jobs:
         run: |
           rm -rf package-lock.json node_modules
           npm install vite
-          yarn dev &
-          wait
+          yarn dev 
 
       - name: Zip artifact for deployment
         run: zip -r dist.zip dist
