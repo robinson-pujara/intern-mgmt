@@ -20,12 +20,13 @@ jobs:
 
       - name: Install dependencies and run vite
         run: |
+          rm -rf package-lock.json node_modules
           npm install vite
           yarn dev &
           wait
 
       - name: Zip artifact for deployment
-        run: zip -r dist.zip dist/*
+        run: zip -r dist.zip dist
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
